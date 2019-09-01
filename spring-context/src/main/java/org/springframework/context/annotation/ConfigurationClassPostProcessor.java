@@ -259,8 +259,11 @@ public class ConfigurationClassPostProcessor implements BeanDefinitionRegistryPo
 	 * {@link Configuration} classes.
 	 */
 	public void processConfigBeanDefinitions(BeanDefinitionRegistry registry) {
+		/**
+		 * 存放BeanDefinition，即项目中提供了 @Component
+		 */
 		List<BeanDefinitionHolder> configCandidates = new ArrayList<>();
-		//获取容器中所有的 bean
+		//获取容器中所有的 bean，7个
 		String[] candidateNames = registry.getBeanDefinitionNames();
 
 		/**
@@ -277,6 +280,11 @@ public class ConfigurationClassPostProcessor implements BeanDefinitionRegistryPo
 					logger.debug("Bean definition has already been processed as a configuration class: " + beanDef);
 				}
 			}
+			/**
+			 * 判断是否加了@Configuration注解
+			 *
+			 * 加不加@Configuration注解都无所谓
+			 */
 			else if (ConfigurationClassUtils.checkConfigurationClassCandidate(beanDef, this.metadataReaderFactory)) {
 				configCandidates.add(new BeanDefinitionHolder(beanDef, beanName));
 			}
@@ -295,10 +303,15 @@ public class ConfigurationClassPostProcessor implements BeanDefinitionRegistryPo
 		});
 
 		// Detect any custom bean name generation strategy supplied through the enclosing application context
+		/**
+		 * 如果BeanDefinitionRegistry 是 SingletonBeanRegistry子类的话
+		 */
 		SingletonBeanRegistry sbr = null;
 		if (registry instanceof SingletonBeanRegistry) {
 			sbr = (SingletonBeanRegistry) registry;
+			//是否有自定义的
 			if (!this.localBeanNameGeneratorSet) {
+				//bean 名字的生成器
 				BeanNameGenerator generator = (BeanNameGenerator) sbr.getSingleton(CONFIGURATION_BEAN_NAME_GENERATOR);
 				if (generator != null) {
 					this.componentScanBeanNameGenerator = generator;
@@ -311,12 +324,14 @@ public class ConfigurationClassPostProcessor implements BeanDefinitionRegistryPo
 			this.environment = new StandardEnvironment();
 		}
 
-		// Parse each @Configuration class
+		/**
+		 * 实例化 ConfigurationClassParser，为了解析各个配置类
+		 */
 		ConfigurationClassParser parser = new ConfigurationClassParser(
 				this.metadataReaderFactory, this.problemReporter, this.environment,
 				this.resourceLoader, this.componentScanBeanNameGenerator, registry);
 
-		//去重
+		//去重，防止配置类重复
 		Set<BeanDefinitionHolder> candidates = new LinkedHashSet<>(configCandidates);
 		//判断是否处理过
 		Set<ConfigurationClass> alreadyParsed = new HashSet<>(configCandidates.size());

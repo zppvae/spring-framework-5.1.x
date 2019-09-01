@@ -119,11 +119,22 @@ abstract class ConfigurationClassUtils {
 		}
 		/**
 		 * 是否加了 @Configuration 注解
+		 *
+		 * 如果存在，spring认为当前类是一个全注解的类
 		 */
 		if (isFullConfigurationCandidate(metadata)) {
 			beanDef.setAttribute(CONFIGURATION_CLASS_ATTRIBUTE, CONFIGURATION_CLASS_FULL);
 		}
-		//其他注解
+		/**
+		 * 其他注解
+		 *
+		 * candidateIndicators.add(Component.class.getName());
+		 * candidateIndicators.add(ComponentScan.class.getName());
+		 * candidateIndicators.add(Import.class.getName());
+		 * candidateIndicators.add(ImportResource.class.getName());
+		 *
+		 * 如果不存在，spring认为当前类是一个部分注解的类
+		 */
 		else if (isLiteConfigurationCandidate(metadata)) {
 			beanDef.setAttribute(CONFIGURATION_CLASS_ATTRIBUTE, CONFIGURATION_CLASS_LITE);
 		}
