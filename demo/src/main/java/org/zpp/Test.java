@@ -4,6 +4,7 @@ import org.springframework.context.annotation.AnnotationConfigApplicationContext
 import org.zpp.beanFactoryProcessor.MyBeanFactoryProcessor;
 import org.zpp.config.AppConfig;
 import org.zpp.dao.IndexDao;
+import org.zpp.dao.IndexDao2;
 
 /**
  * spring 扩展点
@@ -15,7 +16,7 @@ import org.zpp.dao.IndexDao;
 public class Test {
 
 	public static void main(String[] args){
-		test2();
+		test3();
 	}
 
 	public static void test(){
@@ -37,5 +38,15 @@ public class Test {
 
 		IndexDao dao = (IndexDao)applicationContext.getBean("indexDao");
 		dao.test();
+	}
+
+	/**
+	 * @Import(MyImportSelector.class)
+	 */
+	public static void test3(){
+		AnnotationConfigApplicationContext applicationContext =
+				new AnnotationConfigApplicationContext(AppConfig.class);
+
+		applicationContext.getBean(IndexDao2.class).test();
 	}
 }
