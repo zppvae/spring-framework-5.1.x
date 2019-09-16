@@ -9,6 +9,13 @@ import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
 
+/**
+ * MyFactoryBean 会注册两个对象
+ * 1、它自己
+ * 2、getObject() 返回的对象
+ *
+ * @author zpp
+ */
 public class MyFactoryBean implements FactoryBean, InvocationHandler {
 
 	Class clazz;

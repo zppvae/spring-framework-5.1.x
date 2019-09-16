@@ -11,7 +11,7 @@ import org.zpp.component.MyImportSelector;
 /**
  * @Configuration
  * @ComponentScan("org.zpp")
- * @DemoScan
+ * @DemoScan（推荐）
  *
  * @ComponentScan("org.zpp")
  * @EnableImport

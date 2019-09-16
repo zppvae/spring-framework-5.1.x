@@ -21,6 +21,7 @@ public class MyImportBeanDefinitionRegistrar implements ImportBeanDefinitionRegi
 	@Override
 	public void registerBeanDefinitions(AnnotationMetadata importingClassMetadata, BeanDefinitionRegistry registry) {
 		//得到 BeanDefinition，以下可以通过扫描包动态获取 BeanDefinition
+		//扫描所有接口
 		BeanDefinitionBuilder builder = BeanDefinitionBuilder.genericBeanDefinition(IndexDao.class);
 		GenericBeanDefinition beanDefinition = (GenericBeanDefinition)builder.getBeanDefinition();
 
