@@ -522,17 +522,17 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 			prepareRefresh();
 
 			/**
-			 * 得到bean工厂
+			 * 得到bean工厂，需要对工厂进行设置
 			 */
 			ConfigurableListableBeanFactory beanFactory = obtainFreshBeanFactory();
 
 			/**
 			 * 1、添加一个类加载器
-			 * 2、添加bean表达式解释器，为了能够让我们的beanFactory去解析bean表达式
-			 * 3、添加一个后置处理器 ApplicationContextAwareProcessor
+			 * 2、添加bean表达式解析器，为了能够让我们的 beanFactory 去解析bean表达式
+			 * 3、添加一个后置处理器  {@link ApplicationContextAwareProcessor}
 			 * 4、添加了自动注入被忽略的列表
 			 * 5、//TODO
-			 * 6、添加了一个ApplicationListenerDetector后置处理器
+			 * 6、添加了一个 ApplicationListenerDetector 后置处理器
 			 */
 			prepareBeanFactory(beanFactory);
 
@@ -675,7 +675,7 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 		//TODO
 		// Configure the bean factory with context callbacks.
 		/**
-		 * 后置处理器
+		 * 后置处理器，插手 bean 的实例化过程
 		 */
 		beanFactory.addBeanPostProcessor(new ApplicationContextAwareProcessor(this));
 		beanFactory.ignoreDependencyInterface(EnvironmentAware.class);

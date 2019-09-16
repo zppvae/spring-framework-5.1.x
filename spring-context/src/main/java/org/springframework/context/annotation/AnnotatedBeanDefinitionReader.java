@@ -268,8 +268,7 @@ public class AnnotatedBeanDefinitionReader {
 		/**
 		 * DefaultListableBeanFactory
 		 *
-		 * Map
-		 * List
+		 * 将 definitionHolder 注册给 registry
 		 *
 		 */
 		BeanDefinitionReaderUtils.registerBeanDefinition(definitionHolder, this.registry);

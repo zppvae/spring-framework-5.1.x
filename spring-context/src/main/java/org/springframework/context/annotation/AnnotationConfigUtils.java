@@ -148,6 +148,9 @@ public abstract class AnnotationConfigUtils {
 	public static Set<BeanDefinitionHolder> registerAnnotationConfigProcessors(
 			BeanDefinitionRegistry registry, @Nullable Object source) {
 
+		/**
+		 * 从spring环境中获取工厂
+		 */
 		DefaultListableBeanFactory beanFactory = unwrapDefaultListableBeanFactory(registry);
 		if (beanFactory != null) {
 			/**
@@ -179,6 +182,11 @@ public abstract class AnnotationConfigUtils {
 		 * ...
 		 */
 		if (!registry.containsBeanDefinition(CONFIGURATION_ANNOTATION_PROCESSOR_BEAN_NAME)) {
+			/**
+			 * BeanDefinition 注册
+			 *
+			 * 通过 BeanDefinition实现类的构造方法生成 BeanDefinition
+			 */
 			RootBeanDefinition def = new RootBeanDefinition(ConfigurationClassPostProcessor.class);
 			def.setSource(source);
 			beanDefs.add(registerPostProcessor(registry, def, CONFIGURATION_ANNOTATION_PROCESSOR_BEAN_NAME));

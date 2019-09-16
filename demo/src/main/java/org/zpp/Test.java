@@ -1,12 +1,22 @@
 package org.zpp;
 
+import org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor;
+import org.springframework.beans.factory.annotation.RequiredAnnotationBeanPostProcessor;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+import org.springframework.context.annotation.CommonAnnotationBeanPostProcessor;
+import org.springframework.context.annotation.ConfigurationClassPostProcessor;
+import org.springframework.context.event.DefaultEventListenerFactory;
+import org.springframework.context.event.EventListenerMethodProcessor;
 import org.zpp.beanFactoryProcessor.MyBeanFactoryProcessor;
 import org.zpp.config.AppConfig;
 import org.zpp.dao.IndexDao;
 import org.zpp.dao.IndexDao2;
 
 /**
+ * BeanDefinition：bean的定义
+ *
+ * AnnotationConfigApplicationContext = BeanDefinitionRegistry
+ *
  * spring 扩展点
  * 1、BeanPostProcessor
  * 2、BeanFactoryPostProcessor
@@ -38,6 +48,7 @@ public class Test {
 
 		IndexDao dao = (IndexDao)applicationContext.getBean("indexDao");
 		dao.test();
+
 	}
 
 	/**
@@ -48,5 +59,6 @@ public class Test {
 				new AnnotationConfigApplicationContext(AppConfig.class);
 
 		applicationContext.getBean(IndexDao2.class).test();
+
 	}
 }
