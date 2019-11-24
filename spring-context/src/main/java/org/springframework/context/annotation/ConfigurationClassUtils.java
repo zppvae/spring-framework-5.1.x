@@ -118,7 +118,7 @@ abstract class ConfigurationClassUtils {
 			}
 		}
 		/**
-		 * 是否加了 @Configuration 注解
+		 * bd 中是否加了 @Configuration 注解
 		 *
 		 * 如果存在，spring认为当前类是一个全注解的类
 		 */

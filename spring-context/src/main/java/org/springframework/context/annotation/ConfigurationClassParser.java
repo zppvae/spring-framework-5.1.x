@@ -250,6 +250,9 @@ class ConfigurationClassParser {
 		}
 		while (sourceClass != null);
 
+		/**
+		 * 用来存放扫描出来的 bean（此处不是bean对象，只是bean的信息）
+		 */
 		this.configurationClasses.put(configClass, configClass);
 	}
 
@@ -312,14 +315,22 @@ class ConfigurationClassParser {
 			}
 		}
 
+		/**
+		 * 以上代码就是扫描普通类（加了@Component注解），最后将bd 放到Map中
+		 */
+
 		// Process any @Import annotations
 		/**
 		 * 处理@Import注解
 		 *
+		 * 处理逻辑：
+		 * 1、处理AppConfig中的@Import注解
+		 * 2、处理@Import(MyImportSelector.class)中的MyImportSelector是否是以下三种import
+		 *
 		 * import三种情况：
-		 * 1、ImportSelector
-		 * 2、ImportBeanDefinitionRegistrar
-		 * 3、普通类
+		 * 1、ImportSelector（会先放到configurationClasses里，之后再注册）
+		 * 2、ImportBeanDefinitionRegistrar（会先放到importBeanDefinitionRegistrars里，之后再注册）
+		 * 3、普通类（会先放到configurationClasses里）
 		 */
 		processImports(configClass, sourceClass, getImports(sourceClass), true);
 
@@ -604,6 +615,9 @@ class ConfigurationClassParser {
 					else {
 						// Candidate class not an ImportSelector or ImportBeanDefinitionRegistrar ->
 						// process it as an @Configuration class
+						/**
+						 * 如果是ImportSelector，会先放到configurationClasses里，之后再进行注册
+						 */
 						this.importStack.registerImport(
 								currentSourceClass.getMetadata(), candidate.getMetadata().getClassName());
 						processConfigurationClass(candidate.asConfigClass(configClass));

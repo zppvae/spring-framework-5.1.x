@@ -1,3 +1,5 @@
+# spring bean 生命周期
+
 ## BeanDefinition
 
 定义`bean`的信息
@@ -5,8 +7,6 @@
 `AnnotatedBeanDefinition`，描述加了注解的类
 
 `RootBeanDefinition`，描述spring内部的类
-
-
 
 ## 6个最重要的类
 
@@ -40,3 +40,10 @@ List<String> beanDefinitionNames;
 //处理延迟加载的功能
 private AutowireCandidateResolver autowireCandidateResolver 
 ```
+
+## CommonAnnotationBeanPostProcessor
+处理 `bean` 的生命周期回调
+
+## spring bean的实例化过程
+
+## 循环引用
