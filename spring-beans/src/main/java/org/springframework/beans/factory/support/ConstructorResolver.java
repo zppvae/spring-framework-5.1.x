@@ -130,6 +130,9 @@ class ConstructorResolver {
 		else {
 			Object[] argsToResolve = null;
 			synchronized (mbd.constructorArgumentLock) {
+				/**
+				 * 获取已解析的构造方法
+				 */
 				constructorToUse = (Constructor<?>) mbd.resolvedConstructorOrFactoryMethod;
 				if (constructorToUse != null && mbd.constructorArgumentsResolved) {
 					// Found a cached constructor...
@@ -178,18 +181,44 @@ class ConstructorResolver {
 					mbd.getResolvedAutowireMode() == AutowireCapableBeanFactory.AUTOWIRE_CONSTRUCTOR);
 			ConstructorArgumentValues resolvedValues = null;
 
+			/**
+			 * 最小参数个数
+			 *
+			 */
 			int minNrOfArgs;
 			if (explicitArgs != null) {
 				minNrOfArgs = explicitArgs.length;
 			}
 			else {
+				//ConstructorArgumentValues：保存构造方法的值
+				//保存了参数值和参数值对应的下标
 				ConstructorArgumentValues cargs = mbd.getConstructorArgumentValues();
 				resolvedValues = new ConstructorArgumentValues();
+				/**
+				 *   <bean id="test" class="com.Tests">
+				 *       <constructor-arg index="0" value="str"/>
+				 *   </bean>
+				 *
+				 *   minNrOfArgs=1
+				 *
+				 *
+				 */
 				minNrOfArgs = resolveConstructorArguments(beanName, mbd, bw, cargs, resolvedValues);
 			}
 
+			/**
+			 *  多个构造方法排序结果：
+			 *
+			 *  1. public Test(Object o1,Object o2,Object o3)
+			 *  2. public Test(Object o1,Object o2)
+			 *  3. public Test(Object o1)
+			 *  4. protected Test(Integer i,Object o1,Object o2,Object o3)
+			 *  5. protected Test(Integer i,Object o1,Object o2)
+			 */
 			AutowireUtils.sortConstructors(candidates);
+			//差异变量
 			int minTypeDiffWeight = Integer.MAX_VALUE;
+			//有歧义的构造方法
 			Set<Constructor<?>> ambiguousConstructors = null;
 			LinkedList<UnsatisfiedDependencyException> causes = null;
 
@@ -212,9 +241,13 @@ class ConstructorResolver {
 						if (paramNames == null) {
 							ParameterNameDiscoverer pnd = this.beanFactory.getParameterNameDiscoverer();
 							if (pnd != null) {
+								//获取构造方法参数名称列表
 								paramNames = pnd.getParameterNames(candidate);
 							}
 						}
+						/**
+						 * 参数值转换，xml中参数只能配置字符串，需要转换成java中对应的类型
+						 */
 						argsHolder = createArgumentArray(beanName, mbd, resolvedValues, bw, paramTypes, paramNames,
 								getUserDeclaredConstructor(candidate), autowiring, candidates.length == 1);
 					}
@@ -257,6 +290,9 @@ class ConstructorResolver {
 				}
 			}
 
+			/**
+			 * 没有找到合适的构造方法
+			 */
 			if (constructorToUse == null) {
 				if (causes != null) {
 					UnsatisfiedDependencyException ex = causes.removeLast();

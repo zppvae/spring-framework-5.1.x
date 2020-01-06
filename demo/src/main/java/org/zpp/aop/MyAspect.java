@@ -9,12 +9,12 @@ import org.springframework.stereotype.Component;
 @Aspect
 public class MyAspect {
 
-	@Pointcut("execution(* org.zpp.dao..*.*(..))")
+	@Pointcut("execution(* org.zpp.aop.dao..*.*(..))")
 	public void pointCut(){
 	}
 
 	@Before("pointCut()")
 	public void before(){
-		System.out.println("before proxy");
+		System.out.println("proxy before");
 	}
 }

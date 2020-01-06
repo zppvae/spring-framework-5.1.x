@@ -137,6 +137,7 @@ class ConfigurationClassBeanDefinitionReader {
 		if (configClass.isImported()) {
 			registerBeanDefinitionForImportedConfigurationClass(configClass);
 		}
+		//处理加了 @Bean
 		for (BeanMethod beanMethod : configClass.getBeanMethods()) {
 			loadBeanDefinitionsForBeanMethod(beanMethod);
 		}
@@ -216,10 +217,17 @@ class ConfigurationClassBeanDefinitionReader {
 
 		/**
 		 * 是否加了 static
+		 *
+		 * @Bean
+		 * public static Test test(){
+		 *    return new Test();
+		 * }
+		 *
 		 */
 		if (metadata.isStatic()) {
 			// static @Bean method
 			beanDef.setBeanClassName(configClass.getMetadata().getClassName());
+			//为 bean 配置factoryMethod
 			beanDef.setFactoryMethodName(methodName);
 		}
 		else {

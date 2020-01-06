@@ -1,19 +1,13 @@
 package org.zpp;
 
-import org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor;
-import org.springframework.beans.factory.annotation.RequiredAnnotationBeanPostProcessor;
 import org.springframework.cglib.core.SpringNamingPolicy;
-import org.springframework.cglib.proxy.Callback;
 import org.springframework.cglib.proxy.Enhancer;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
-import org.springframework.context.annotation.CommonAnnotationBeanPostProcessor;
-import org.springframework.context.annotation.ConfigurationClassPostProcessor;
-import org.springframework.context.event.DefaultEventListenerFactory;
-import org.springframework.context.event.EventListenerMethodProcessor;
 import org.zpp.aop.AopConfig;
+import org.zpp.aop.service.OrderServiceImpl;
 import org.zpp.beanFactoryProcessor.MyBeanFactoryProcessor;
 import org.zpp.config.AppConfig;
-import org.zpp.dao.AopDao;
+import org.zpp.aop.dao.OrderDao;
 import org.zpp.dao.IndexDao;
 import org.zpp.dao.IndexDao2;
 import org.zpp.dao.IndexDaoImpl;
@@ -102,6 +96,10 @@ public class Test {
 		AnnotationConfigApplicationContext applicationContext =
 				new AnnotationConfigApplicationContext(AopConfig.class);
 
-		applicationContext.getBean(AopDao.class).print();
+//		applicationContext.getBean(OrderDao.class).print("targer----");
+
+		applicationContext.getBean(OrderServiceImpl.class).query("B");
 	}
+
+
 }
