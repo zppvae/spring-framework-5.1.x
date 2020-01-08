@@ -1,3 +1,14 @@
+
+## BeanFactory
+
+定义获取 bean 以及 bean的各种属性
+
+## HierarchicalBeanFactory
+在 BeanFactory 功能的基础上增加了对 parentFactory的支持
+
+## BeanDefinitionRegistry
+对 BeanDefinition 的各种增删改操作
+
 ## BeanDefinition
 
 定义`bean`的信息
@@ -18,7 +29,7 @@ RequiredAnnotationBeanPostProcessor(spring5.1.x废除)
 ```
 ## BeanDefinitionHolder
 
-```
+```java
 /**
  * BeanDefinitionHolder，一个数据结构，map结构
  * 保存 beanName、BeanDefinition
@@ -28,7 +39,9 @@ BeanDefinitionHolder definitionHolder = new BeanDefinitionHolder(abd, beanName);
 
 ## DefaultListableBeanFactory
 
-```
+对 `bean` 注册后的处理
+
+```java
 //用于排序
 private Comparator<Object> dependencyComparator;
 //类的描述信息
@@ -36,7 +49,7 @@ Map<String, BeanDefinition> beanDefinitionMap;
 //所有Bean的名字
 List<String> beanDefinitionNames;
 //处理延迟加载的功能
-private AutowireCandidateResolver autowireCandidateResolver 
+private AutowireCandidateResolver autowireCandidateResolver; 
 ```
 
 ## CommonAnnotationBeanPostProcessor
