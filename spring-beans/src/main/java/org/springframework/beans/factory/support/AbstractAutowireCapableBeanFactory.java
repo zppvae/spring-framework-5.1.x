@@ -264,6 +264,13 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 	}
 
 	/**
+	 * 忽略给定接口的自动装配功能
+	 *
+	 * 例如：A中有属性B，如果在读取 Bean A的时候 B 还未初始化，则spring会自动初始化。
+	 * 但是，有些情况下，B不会被初始化，其中一种情况就是 B 实现了 BeanNameAware接口，
+	 * 自动装配时忽略给定依赖接口，通过其他方式解析 Application 上下文注册依赖。
+	 *
+	 *
 	 * Ignore the given dependency interface for autowiring.
 	 * <p>This will typically be used by application contexts to register
 	 * dependencies that are resolved in other ways, like BeanFactory through
