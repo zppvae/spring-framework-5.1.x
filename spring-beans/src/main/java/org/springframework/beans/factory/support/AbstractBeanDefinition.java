@@ -143,21 +143,42 @@ public abstract class AbstractBeanDefinition extends BeanMetadataAttributeAccess
 	@Nullable
 	private String scope = SCOPE_DEFAULT;
 
+	/**
+	 * 是否是抽象，对应 bean 的属性 abstract
+	 */
 	private boolean abstractFlag = false;
 
 	private boolean lazyInit = false;
 
+	/**
+	 * 自动注入模式
+	 */
 	private int autowireMode = AUTOWIRE_NO;
 
 	private int dependencyCheck = DEPENDENCY_CHECK_NONE;
 
+	/**
+	 * 用来表示一个 bean 的实例化依靠另一个 bean 的先实例化
+	 */
 	@Nullable
 	private String[] dependsOn;
 
+	/**
+	 * autowire-candidate 属性设置为 false，这样容器在查找自动装配对象时，将不考虑该 bean。
+	 * 即它不会被考虑作为其他 bean自动装配的候选者，但是该 bean 本身还是可以使用自动装配来注入
+	 * 其他 bean 的。
+	 *
+	 */
 	private boolean autowireCandidate = true;
 
+	/**
+	 * 自动装配时当出现多个 bean 候选者时，将作为首选
+	 */
 	private boolean primary = false;
 
+	/**
+	 * 用来记录 Qualifier
+	 */
 	private final Map<String, AutowireCandidateQualifier> qualifiers = new LinkedHashMap<>();
 
 	@Nullable
@@ -165,11 +186,20 @@ public abstract class AbstractBeanDefinition extends BeanMetadataAttributeAccess
 
 	private boolean nonPublicAccessAllowed = true;
 
+	/**
+	 * 是否以一种宽松的模式解析构造函数
+	 */
 	private boolean lenientConstructorResolution = true;
 
+	/**
+	 * 对应 bean 的属性 factory-bean
+	 */
 	@Nullable
 	private String factoryBeanName;
 
+	/**
+	 * 对应 bean 的属性 factory-method
+	 */
 	@Nullable
 	private String factoryMethodName;
 
@@ -179,6 +209,9 @@ public abstract class AbstractBeanDefinition extends BeanMetadataAttributeAccess
 	@Nullable
 	private MutablePropertyValues propertyValues;
 
+	/**
+	 * 记录 lookup-method、replace-method 元素
+	 */
 	@Nullable
 	private MethodOverrides methodOverrides;
 
@@ -192,6 +225,9 @@ public abstract class AbstractBeanDefinition extends BeanMetadataAttributeAccess
 
 	private boolean enforceDestroyMethod = true;
 
+	/**
+	 * 是否是用户定义的而不是程序本身定义的，创建 AOP 时为true
+	 */
 	private boolean synthetic = false;
 
 	private int role = BeanDefinition.ROLE_APPLICATION;

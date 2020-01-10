@@ -17,6 +17,9 @@
 
 `RootBeanDefinition`，描述spring内部的类
 
+## GenericBeanDefinition
+ 用于承载 bean 的属性
+
 ## 6个最重要的类
 
 ```

@@ -7,12 +7,9 @@
         http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.0.xsd http://www.springframework.org/schema/tool http://www.springframework.org/schema/tool/spring-tool.xsd">
 
 
-	<bean id="myTestBean" class="org.zpp.xml.MyTestBean">
-		<!-- 只是一个额外的声明，不会体现在类中 -->
-		<meta key="testStr" value="1123332"></meta>
+	<bean id="testChangeMethod" class="org.zpp.xml.replace.TestChangeMethod">
+		<replaced-method name="changeMe" replacer="replacer"></replaced-method>
 	</bean>
 
-	<beans profile="dev"></beans>
-
-	<beans profile="test"></beans>
+	<bean id="replacer" class="org.zpp.xml.replace.TestMethodReplacer"></bean>
 </beans>

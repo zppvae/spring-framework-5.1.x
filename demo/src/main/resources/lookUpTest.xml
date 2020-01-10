@@ -7,12 +7,15 @@
         http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.0.xsd http://www.springframework.org/schema/tool http://www.springframework.org/schema/tool/spring-tool.xsd">
 
 
-	<bean id="myTestBean" class="org.zpp.xml.MyTestBean">
-		<!-- 只是一个额外的声明，不会体现在类中 -->
-		<meta key="testStr" value="1123332"></meta>
+	<bean id="student" class="org.zpp.xml.lookup.LookupStudent">
+
 	</bean>
 
-	<beans profile="dev"></beans>
+	<bean id="teacher" class="org.zpp.xml.lookup.LookupTeacher">
 
-	<beans profile="test"></beans>
+	</bean>
+
+	<bean id="getBeanTest" class="org.zpp.xml.lookup.GetBeanTest">
+		<lookup-method name="getBean" bean="student"></lookup-method>
+	</bean>
 </beans>

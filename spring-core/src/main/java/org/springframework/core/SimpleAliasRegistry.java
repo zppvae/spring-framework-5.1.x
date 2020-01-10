@@ -52,6 +52,9 @@ public class SimpleAliasRegistry implements AliasRegistry {
 		Assert.hasText(name, "'name' must not be empty");
 		Assert.hasText(alias, "'alias' must not be empty");
 		synchronized (this.aliasMap) {
+			/**
+			 * 如果 beanName 与 alias 相同的话，不记录 alias
+			 */
 			if (alias.equals(name)) {
 				this.aliasMap.remove(alias);
 				if (logger.isDebugEnabled()) {
@@ -60,6 +63,11 @@ public class SimpleAliasRegistry implements AliasRegistry {
 			}
 			else {
 				String registeredName = this.aliasMap.get(alias);
+				/**
+				 * alias 覆盖处理
+				 *
+				 * 如果 alias 已经使用并且已经指向了另一个 beanName
+				 */
 				if (registeredName != null) {
 					if (registeredName.equals(name)) {
 						// An existing alias - no need to re-register
@@ -74,6 +82,11 @@ public class SimpleAliasRegistry implements AliasRegistry {
 								registeredName + "' with new target name '" + name + "'");
 					}
 				}
+				/**
+				 * alias 循环检查
+				 *
+				 * 当 A->B 存在时，若再次出现 A->C->B 时，则会抛出异常
+				 */
 				checkForAliasCircle(name, alias);
 				this.aliasMap.put(alias, name);
 				if (logger.isTraceEnabled()) {

@@ -60,6 +60,11 @@ public abstract class BeanDefinitionReaderUtils {
 		GenericBeanDefinition bd = new GenericBeanDefinition();
 		bd.setParentName(parentName);
 		if (className != null) {
+			/**
+			 * 如果 classLoader 不为空，则使用传入的 classLoader 同一虚拟机加载类对象，
+			 * 否则只是记录 className
+			 *
+			 */
 			if (classLoader != null) {
 				bd.setBeanClass(ClassUtils.forName(className, classLoader));
 			}
@@ -161,11 +166,16 @@ public abstract class BeanDefinitionReaderUtils {
 			BeanDefinitionHolder definitionHolder, BeanDefinitionRegistry registry)
 			throws BeanDefinitionStoreException {
 
+		/**
+		 * 对 BeanDefinition 的注册分为两部分：通过 beanName 注册和通过别名注册
+		 */
 		// Register bean definition under primary name.
+		//使用 beanName 做唯一标识注册
 		String beanName = definitionHolder.getBeanName();
 		registry.registerBeanDefinition(beanName, definitionHolder.getBeanDefinition());
 
 		// Register aliases for bean name, if any.
+		//注册所有的别名
 		String[] aliases = definitionHolder.getAliases();
 		if (aliases != null) {
 			for (String alias : aliases) {

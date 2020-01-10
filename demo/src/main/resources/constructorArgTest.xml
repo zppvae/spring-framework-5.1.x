@@ -8,11 +8,18 @@
 
 
 	<bean id="myTestBean" class="org.zpp.xml.MyTestBean">
-		<!-- 只是一个额外的声明，不会体现在类中 -->
-		<meta key="testStr" value="1123332"></meta>
+		<!--<constructor-arg index="0">-->
+			<!--<value>aaa</value>-->
+		<!--</constructor-arg>-->
+
+		<!--<constructor-arg>-->
+			<!--<map>-->
+				<!--<entry key="key1" value="val1"></entry>-->
+			<!--</map>-->
+		<!--</constructor-arg>-->
+
+		<property name="testStr" value="aaaaaaa"></property>
+
+		<qualifier type="org.springframework.beans.factory.annotation.Qualifier" value="qfBean"/>
 	</bean>
-
-	<beans profile="dev"></beans>
-
-	<beans profile="test"></beans>
 </beans>
