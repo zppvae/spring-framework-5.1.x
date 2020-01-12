@@ -225,6 +225,10 @@ public class AnnotatedBeanDefinitionReader {
 		 *	包含类的信息，如：元信息、scope、lazy
 		 */
 		AnnotatedGenericBeanDefinition abd = new AnnotatedGenericBeanDefinition(annotatedClass);
+		/**
+		 * 判断是否需要跳过解析（类有没有加注解）
+		 *
+		 */
 		if (this.conditionEvaluator.shouldSkip(abd.getMetadata())) {
 			return;
 		}
@@ -238,8 +242,13 @@ public class AnnotatedBeanDefinitionReader {
 
 		/**
 		 * 处理类当中的公共注解
+		 *
+		 * @Lazy、@DependsOn、@Role、@Description
 		 */
 		AnnotationConfigUtils.processCommonDefinitionAnnotations(abd);
+		/**
+		 * 限定符
+		 */
 		if (qualifiers != null) {
 			for (Class<? extends Annotation> qualifier : qualifiers) {
 				if (Primary.class == qualifier) {

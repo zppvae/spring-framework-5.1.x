@@ -38,14 +38,14 @@ public class AppConfig {
 	 *
 	 * @return
 	 */
-	@Bean
-	public IndexDao2 indexDao2(){
-		return new IndexDao2();
-	}
-
-	@Bean
-	public IndexDao indeDao(){
-		indexDao2();
-		return new IndexDaoImpl();
-	}
+//	@Bean
+//	public IndexDao2 indexDao2(){
+//		return new IndexDao2();
+//	}
+//
+//	@Bean
+//	public IndexDao indeDao(){
+//		indexDao2();
+//		return new IndexDaoImpl();
+//	}
 }

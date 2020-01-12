@@ -59,6 +59,9 @@ import org.springframework.lang.Nullable;
 public interface FactoryBean<T> {
 
 	/**
+	 * 返回由 FactoryBean 创建的 bean 实例，如果 isSingleton = true，
+	 * 则该实例会放到 spring容器中单实例缓存池中
+	 *
 	 * Return an instance (possibly shared or independent) of the object
 	 * managed by this factory.
 	 * <p>As with a {@link BeanFactory}, this allows support for both the

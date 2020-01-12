@@ -20,7 +20,22 @@
 ## GenericBeanDefinition
  用于承载 bean 的属性
 
+## spring 的扩展点：
+```java
+1、{@link org.springframework.beans.factory.config.BeanPostProcessor}
+2、{@link org.springframework.beans.factory.config.BeanFactoryPostProcessor}
+3、{@link org.springframework.beans.factory.support.BeanDefinitionRegistryPostProcessor}
+4、{@link org.springframework.context.annotation.ImportSelector}
+5、{@link org.springframework.context.annotation.ImportBeanDefinitionRegistrar}
+```
+### BeanPostProcessor
+实现此接口，可以插手 `bean` 的实例化过程。
+
+spring 内部的处理器通过 addBeanPostProcessor，自定义的通过扫描注解获取
+ 
 ## 6个最重要的类
+
+保存在 beanDefinitionMap中
 
 ```
 ConfigurationClassPostProcessor
@@ -96,8 +111,10 @@ public class RedissonHttpSessionConfiguration extends SpringHttpSessionConfigura
 ```
 ## bean的后置处理器
 
+- ApplicationContextAwareProcessor
 - PostProcessorRegistrationDelegate
 - ApplicationListenerDetector
+- ConfigurationClassPostProcessor
 - RequiredAnnotationBeanPostProcessor（处理@Required）
 
 `spring` 后置处理器，贯穿整个 `spring bean` 的实例化前后

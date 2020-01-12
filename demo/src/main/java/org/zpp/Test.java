@@ -5,6 +5,7 @@ import org.springframework.cglib.proxy.Enhancer;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.zpp.aop.AopConfig;
 import org.zpp.aop.service.OrderServiceImpl;
+import org.zpp.applicationContext.ContextDao;
 import org.zpp.beanFactoryProcessor.MyBeanFactoryProcessor;
 import org.zpp.config.AppConfig;
 import org.zpp.aop.dao.OrderDao;
@@ -35,10 +36,15 @@ import org.zpp.enhance.TestMethodCallback;
 public class Test {
 
 	public static void main(String[] args){
-		aopTest();
+		testBeanFactoryPostProcessor();
 	}
 
-	public static void test(){
+	/**
+	 * ComponentScan("org.zpp")
+	 * @Configuration
+	 *
+	 */
+	public static void testBeanFactoryPostProcessor(){
 		AnnotationConfigApplicationContext applicationContext =
 				new AnnotationConfigApplicationContext();
 		applicationContext.register(AppConfig.class);
@@ -50,8 +56,8 @@ public class Test {
 		applicationContext.addBeanFactoryPostProcessor(new MyBeanFactoryProcessor());
 		//初始化spring的环境
 		applicationContext.refresh();
-//		IndexDao dao = applicationContext.getBean(IndexDao.class);
-//		dao.test();
+		IndexDao dao = applicationContext.getBean(IndexDao.class);
+		dao.test();
 	}
 
 	public static void test2(){
@@ -101,5 +107,11 @@ public class Test {
 		applicationContext.getBean(OrderServiceImpl.class).query("B");
 	}
 
+	public static void testApplicationContext(){
+		AnnotationConfigApplicationContext applicationContext =
+				new AnnotationConfigApplicationContext(AppConfig.class);
+
+		applicationContext.getBean("contextDao");
+	}
 
 }
