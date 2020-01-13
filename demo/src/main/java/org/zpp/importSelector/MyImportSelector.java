@@ -1,4 +1,4 @@
-package org.zpp.component;
+package org.zpp.importSelector;
 
 import org.springframework.context.annotation.ImportSelector;
 import org.springframework.core.type.AnnotationMetadata;

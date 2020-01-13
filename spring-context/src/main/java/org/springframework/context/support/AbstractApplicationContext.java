@@ -546,7 +546,12 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 				 * 执行调用applicationContext.addBeanFactoryPostProcessor()
 				 * 的和spring内部的BeanFactoryPostProcessor
 				 *
-				 * 1、getBeanFactoryPostProcessors()得到自己定义的,没有加@Component
+				 * 1、getBeanFactoryPostProcessors()得到自己手动添加的,没有加@Component
+				 *
+				 * 手动添加的方式：
+				 * <pre>
+				 *     applicationContext.addBeanFactoryPostProcessor();
+				 * </pre>
 				 * 2、得到spring内部自己维护的 BeanDefinitionRegistryPostProcessor
 				 */
 				invokeBeanFactoryPostProcessors(beanFactory);
@@ -755,7 +760,7 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 	protected void invokeBeanFactoryPostProcessors(ConfigurableListableBeanFactory beanFactory) {
 
 		/**
-		 *  getBeanFactoryPostProcessors()：获取自定义的
+		 *  getBeanFactoryPostProcessors()：获取手动添加给 spring 的
 		 */
 		PostProcessorRegistrationDelegate.invokeBeanFactoryPostProcessors(beanFactory, getBeanFactoryPostProcessors());
 

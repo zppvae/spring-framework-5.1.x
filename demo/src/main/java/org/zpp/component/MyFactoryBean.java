@@ -1,9 +1,7 @@
 package org.zpp.component;
 
 import org.springframework.beans.factory.FactoryBean;
-import org.springframework.stereotype.Component;
-import org.zpp.dao.IndexDao;
-import org.zpp.handler.MyInvocationHandler;
+import org.zpp.importBeanDefinitionRegistrar.BeanDefinitionDao;
 
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
@@ -25,8 +23,8 @@ public class MyFactoryBean implements FactoryBean, InvocationHandler {
 	}
 	@Override
 	public Object getObject() throws Exception {
-		Class[] clazz = new Class[]{IndexDao.class};
-		return Proxy.newProxyInstance(this.getClass().getClassLoader(),clazz,this);
+		Class[] clazzs = new Class[]{clazz};
+		return Proxy.newProxyInstance(this.getClass().getClassLoader(),clazzs,this);
 	}
 
 	@Override

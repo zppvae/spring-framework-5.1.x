@@ -66,7 +66,9 @@ public class AnnotationConfigApplicationContext extends GenericApplicationContex
 		 * 创建一个注解bean的读取器，读取加了注解的bean，
 		 * 将 BeanDefinition put 到 beanDefinitionMap
 		 *
-		 * 注册了6个重要的 BeanDefinition
+		 * <pre>
+		 *     注册了6个重要的 BeanDefinition
+		 * </pre>
 		 */
 		this.reader = new AnnotatedBeanDefinitionReader(this);
 

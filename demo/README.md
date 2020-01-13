@@ -37,7 +37,7 @@ spring 内部的处理器通过 addBeanPostProcessor，自定义的通过扫描�
 
 保存在 beanDefinitionMap中
 
-```
+```java
 ConfigurationClassPostProcessor
 DefaultEventListenerFactory
 EventListenerMethodProcessor
@@ -69,6 +69,12 @@ List<String> beanDefinitionNames;
 //处理延迟加载的功能
 private AutowireCandidateResolver autowireCandidateResolver; 
 ```
+
+## @import可以引入的几种类
+
+- 普通类
+- ImportSelector实现类
+- ImportBeanDefinitionRegistrar实现类（可以往bdMap中添加一个bd）
 
 ## CommonAnnotationBeanPostProcessor
 处理 `bean` 的生命周期回调

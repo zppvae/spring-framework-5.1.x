@@ -161,7 +161,7 @@ final class PostProcessorRegistrationDelegate {
 			/**
 			 * 执行BeanFactoryPostProcessor
 			 *
-			 * 先处理子类 registryProcessors，再处理弗父类 regularPostProcessors
+			 * 先处理子类 registryProcessors，再处理父类 regularPostProcessors
 			 */
 			invokeBeanFactoryPostProcessors(registryProcessors, beanFactory);
 			/**

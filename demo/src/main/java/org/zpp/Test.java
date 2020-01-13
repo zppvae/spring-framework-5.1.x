@@ -60,6 +60,12 @@ public class Test {
 		dao.test();
 	}
 
+	public static void testScan(){
+		AnnotationConfigApplicationContext applicationContext =
+				new AnnotationConfigApplicationContext(AppConfig.class);
+		applicationContext.scan("org.zpp");
+	}
+
 	public static void test2(){
 		AnnotationConfigApplicationContext applicationContext =
 				new AnnotationConfigApplicationContext(AppConfig.class);

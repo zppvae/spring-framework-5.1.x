@@ -2,8 +2,7 @@ package org.zpp.annotation;
 
 
 import org.springframework.context.annotation.Import;
-import org.zpp.beanDefinition.MyImportBeanDefinitionRegistrar;
-import org.zpp.component.MyImportSelector;
+import org.zpp.importSelector.MyImportSelector;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
