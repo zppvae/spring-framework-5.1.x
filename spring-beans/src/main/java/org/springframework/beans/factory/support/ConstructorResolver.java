@@ -124,10 +124,17 @@ class ConstructorResolver {
 		ArgumentsHolder argsHolderToUse = null;
 		Object[] argsToUse = null;
 
+		/**
+		 * explicitArgs 通过 getBean 方法传入
+		 * 如果 getBean 方法调用的时候指定方法参数，那么直接使用
+		 */
 		if (explicitArgs != null) {
 			argsToUse = explicitArgs;
 		}
 		else {
+			/**
+			 * 如果在 getBean() 时没有指定则尝试从配置文件中解析
+			 */
 			Object[] argsToResolve = null;
 			synchronized (mbd.constructorArgumentLock) {
 				/**
@@ -136,17 +143,25 @@ class ConstructorResolver {
 				constructorToUse = (Constructor<?>) mbd.resolvedConstructorOrFactoryMethod;
 				if (constructorToUse != null && mbd.constructorArgumentsResolved) {
 					// Found a cached constructor...
+					//从缓存中取
 					argsToUse = mbd.resolvedConstructorArguments;
 					if (argsToUse == null) {
+						//配置的构造函数参数
 						argsToResolve = mbd.preparedConstructorArguments;
 					}
 				}
 			}
+			//如果缓存中存在
 			if (argsToResolve != null) {
+				/**
+				 * 解析参数类型，如给定方法的构造参数 A(int,int)，则通过此方法后就
+				 * 会把配置中的("1","1")转换为(1,1)
+				 *
+				 */
 				argsToUse = resolvePreparedArguments(beanName, mbd, bw, constructorToUse, argsToResolve, true);
 			}
 		}
-
+		//没有被缓存
 		if (constructorToUse == null || argsToUse == null) {
 			// Take specified constructors, if any.
 			Constructor<?>[] candidates = chosenCtors;
@@ -190,9 +205,14 @@ class ConstructorResolver {
 				minNrOfArgs = explicitArgs.length;
 			}
 			else {
-				//ConstructorArgumentValues：保存构造方法的值
-				//保存了参数值和参数值对应的下标
+				/**
+				 * 提取配置文件中配置的构造函数参数
+				 *
+				 * ConstructorArgumentValues：保存构造方法的值
+				 * 保存了参数值和参数值对应的下标
+				 */
 				ConstructorArgumentValues cargs = mbd.getConstructorArgumentValues();
+				//用于承载解析后的构造函数参数的值
 				resolvedValues = new ConstructorArgumentValues();
 				/**
 				 *   <bean id="test" class="com.Tests">
@@ -207,6 +227,8 @@ class ConstructorResolver {
 			}
 
 			/**
+			 * 排序给定的构造函数，public 构造函数优先参数数量降序、非public 构造函数优先参数数量降序
+			 *
 			 *  多个构造方法排序结果：
 			 *
 			 *  1. public Test(Object o1,Object o2,Object o3)
@@ -225,20 +247,27 @@ class ConstructorResolver {
 			for (Constructor<?> candidate : candidates) {
 				Class<?>[] paramTypes = candidate.getParameterTypes();
 
+				/**
+				 * 如果已经找到选用的构造函数或者需要的参数个数小于当前的构造函数参数个数则终止
+				 * 因为已经按照参数个数降序排列
+				 */
 				if (constructorToUse != null && argsToUse != null && argsToUse.length > paramTypes.length) {
 					// Already found greedy constructor that can be satisfied ->
 					// do not look any further, there are only less greedy constructors left.
 					break;
 				}
 				if (paramTypes.length < minNrOfArgs) {
+					//参数个数不相等
 					continue;
 				}
 
 				ArgumentsHolder argsHolder;
 				if (resolvedValues != null) {
 					try {
+						//注释上获取参数名称
 						String[] paramNames = ConstructorPropertiesChecker.evaluate(candidate, paramTypes.length);
 						if (paramNames == null) {
+							//获取参数名称探索器
 							ParameterNameDiscoverer pnd = this.beanFactory.getParameterNameDiscoverer();
 							if (pnd != null) {
 								//获取构造方法参数名称列表
@@ -246,6 +275,8 @@ class ConstructorResolver {
 							}
 						}
 						/**
+						 * 参数持有者
+						 *
 						 * 参数值转换，xml中参数只能配置字符串，需要转换成java中对应的类型
 						 */
 						argsHolder = createArgumentArray(beanName, mbd, resolvedValues, bw, paramTypes, paramNames,
@@ -268,12 +299,19 @@ class ConstructorResolver {
 					if (paramTypes.length != explicitArgs.length) {
 						continue;
 					}
+					//构造函数没有参数的情况
 					argsHolder = new ArgumentsHolder(explicitArgs);
 				}
 
+				/**
+				 * 探测是否有不确定性的构造函数存在，例如不同构造函数的参数为父子关系
+				 */
 				int typeDiffWeight = (mbd.isLenientConstructorResolution() ?
 						argsHolder.getTypeDifferenceWeight(paramTypes) : argsHolder.getAssignabilityWeight(paramTypes));
 				// Choose this constructor if it represents the closest match.
+				/**
+				 * 如果它代表着当前最接近的匹配，则选择作为构造函数
+				 */
 				if (typeDiffWeight < minTypeDiffWeight) {
 					constructorToUse = candidate;
 					argsHolderToUse = argsHolder;
@@ -313,6 +351,7 @@ class ConstructorResolver {
 			}
 
 			if (explicitArgs == null && argsHolderToUse != null) {
+				//将解析的构造函数加入缓存
 				argsHolderToUse.storeCache(mbd, constructorToUse);
 			}
 		}

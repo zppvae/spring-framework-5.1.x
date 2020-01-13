@@ -165,3 +165,41 @@ private X x;
 @Autowired
 public void set(X x){}
 ```
+
+## 循环依赖
+
+### 构造器循环依赖
+spring 容器将每一个正在创建的 bean 标识符放在一个 ”当前创建bean池”中，
+bean 标识符在创建过程中将一直保持在这个池中，因此如果在创建 bean 的过程中
+发现自己已经在 “当前创建bean池”里时，将抛出 BeanCurrentlyInCreationException
+异常表示循环依赖。而对于创建完毕的bean将从 “当前创建bean池”中清除掉。
+
+### setter 循环依赖
+对于 setter 注入造成的依赖是通过 spring 容器提前暴露刚完成构造器注入但未完成其他步骤
+（如setter注入）的 bean来完成的，而且只能解决单例作用域的bean循环依赖。
+
+通过提前暴露一个单例工厂方法，从而使其他 bean 能引用到该 bean：
+```java
+addSingletonFactory(beanName, () -> getEarlyBeanReference(beanName, mbd, bean));
+
+```
+
+### prototype 范围的依赖处理
+对于 prototype 作用域 bean，spring 容器无法完成依赖注入，因为spring容器不进行缓存
+ prototype 作用域的 bean，因此无法提前暴露一个创建中的 bean。
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
