@@ -243,7 +243,7 @@ class ConfigurationClassParser {
 		}
 
 		// Recursively process the configuration class and its superclass hierarchy.
-		////类转换，将 configClass 转换为 sourceClass
+		// 类转换，将 configClass 转换为 sourceClass
 		SourceClass sourceClass = asSourceClass(configClass);
 		do {
 			sourceClass = doProcessConfigurationClass(configClass, sourceClass);

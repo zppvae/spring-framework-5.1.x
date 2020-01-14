@@ -125,6 +125,11 @@ public class RedissonHttpSessionConfiguration extends SpringHttpSessionConfigura
 
 `spring` 后置处理器，贯穿整个 `spring bean` 的实例化前后
 
+## bean 的生命周期流程
+1、得到用户自定义的BeanDefinitionRegistryPostProcessor
+2、得到spring内置的 BeanDefinitionRegistryPostProcessor
+3、处理 BeanDefinitionRegistryPostProcessor（遍历）
+
 ## BeanFactoryPostProcessor
 
 > 典型应用：PropertyPlaceholderConfigurer
