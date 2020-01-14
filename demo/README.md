@@ -125,6 +125,10 @@ public class RedissonHttpSessionConfiguration extends SpringHttpSessionConfigura
 
 `spring` 后置处理器，贯穿整个 `spring bean` 的实例化前后
 
+## BeanFactoryPostProcessor
+
+> 典型应用：PropertyPlaceholderConfigurer
+
 ## AOP
 
 - @EnableAspectJAutoProxy中的@Import(AspectJAutoProxyRegistrar.class)添加一个AnnotationAutoProxyCreator的后置处理器，
