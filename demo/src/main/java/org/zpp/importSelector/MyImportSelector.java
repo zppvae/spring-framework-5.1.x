@@ -8,6 +8,6 @@ public class MyImportSelector implements ImportSelector {
 
 	@Override
 	public String[] selectImports(AnnotationMetadata importingClassMetadata) {
-		return new String[]{IndexDao2.class.getName()};
+		return new String[]{ImportSelectorDao.class.getName()};
 	}
 }

@@ -14,8 +14,8 @@ public class MyBeanFactoryProcessor implements BeanFactoryPostProcessor {
 		/**
 		 * 插手 bean工厂初始化
 		 */
-		AnnotatedBeanDefinition beanDefinition = (AnnotatedBeanDefinition) beanFactory.getBeanDefinition("indexDao");
-		//每次获取的indexDao都是不同的
+		AnnotatedBeanDefinition beanDefinition = (AnnotatedBeanDefinition) beanFactory.getBeanDefinition("factoryDao");
+		//每次获取的 factoryDao 都是不同的
 		beanDefinition.setScope("prototype");
 	}
 }

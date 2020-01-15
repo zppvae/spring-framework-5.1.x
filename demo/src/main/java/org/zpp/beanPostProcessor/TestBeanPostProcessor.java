@@ -15,7 +15,7 @@ public class TestBeanPostProcessor implements BeanPostProcessor, PriorityOrdered
 
 	@Override
 	public Object postProcessBeforeInitialization(Object bean, String beanName) throws BeansException {
-		if (beanName.equals("indexDao")) {
+		if (beanName.equals("beanPostProcessorDao")) {
 			//此处可以返回代理对象
 			System.out.println("BeforeInitialization");
 		}
@@ -24,7 +24,7 @@ public class TestBeanPostProcessor implements BeanPostProcessor, PriorityOrdered
 
 	@Override
 	public Object postProcessAfterInitialization(Object bean, String beanName) throws BeansException {
-		if (beanName.equals("indexDao")) {
+		if (beanName.equals("beanPostProcessorDao")) {
 			System.out.println("AfterInitialization");
 		}
 		return bean;
