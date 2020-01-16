@@ -591,14 +591,18 @@ class ConfigurationClassParser {
 						Class<?> candidateClass = candidate.loadClass();
 						//通过反射实现一个对象
 						ImportSelector selector = BeanUtils.instantiateClass(candidateClass, ImportSelector.class);
+
 						ParserStrategyUtils.invokeAwareMethods(
 								selector, this.environment, this.resourceLoader, this.registry);
 						if (selector instanceof DeferredImportSelector) {
 							this.deferredImportSelectorHandler.handle(configClass, (DeferredImportSelector) selector);
 						}
 						else {
+							//调用 ImportSelector#selectImports() 方法
 							String[] importClassNames = selector.selectImports(currentSourceClass.getMetadata());
+							//拿到 selectImports() 返回的字符串，将其转换成对应的类
 							Collection<SourceClass> importSourceClasses = asSourceClasses(importClassNames);
+							//递归调用 @Import类中（转换后的类）包含的@Import注解
 							processImports(configClass, currentSourceClass, importSourceClasses, false);
 						}
 					}
