@@ -7,19 +7,5 @@
         http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.0.xsd http://www.springframework.org/schema/tool http://www.springframework.org/schema/tool/spring-tool.xsd">
 
 
-	<bean id="myTestBean" name="myTestBean,myTestBean2" class="org.zpp.xml.MyTestBean">
-		<!--<constructor-arg index="0">-->
-			<!--<value>aaa</value>-->
-		<!--</constructor-arg>-->
-
-		<!--<constructor-arg>-->
-			<!--<map>-->
-				<!--<entry key="key1" value="val1"></entry>-->
-			<!--</map>-->
-		<!--</constructor-arg>-->
-
-		<property name="testStr" value="aaaaaaa"></property>
-
-		<qualifier type="org.springframework.beans.factory.annotation.Qualifier" value="qfBean"/>
-	</bean>
+	<bean id="myTestBean5" class="org.zpp.xml.MyTestBean"></bean>
 </beans>

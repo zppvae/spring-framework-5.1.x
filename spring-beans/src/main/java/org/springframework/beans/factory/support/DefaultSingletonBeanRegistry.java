@@ -212,7 +212,9 @@ public class DefaultSingletonBeanRegistry extends SimpleAliasRegistry implements
 					 */
 					ObjectFactory<?> singletonFactory = this.singletonFactories.get(beanName);
 					if (singletonFactory != null) {
+						//bean
 						singletonObject = singletonFactory.getObject();
+						//记录在缓存中，earlySingletonObjects 与 singletonFactories 互斥
 						this.earlySingletonObjects.put(beanName, singletonObject);
 						this.singletonFactories.remove(beanName);
 					}

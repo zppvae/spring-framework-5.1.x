@@ -7,10 +7,30 @@
         http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.0.xsd http://www.springframework.org/schema/tool http://www.springframework.org/schema/tool/spring-tool.xsd">
 
 
-	<bean id="myTestBean" class="org.zpp.xml.MyTestBean">
+	<bean id="myTestBean" name="myTestBean,myTestBean2" class="org.zpp.xml.MyTestBean">
 		<!-- 只是一个额外的声明，不会体现在类中 -->
 		<meta key="testStr" value="1123332"></meta>
+
+		<constructor-arg index="0">
+			<value>1</value>
+		</constructor-arg>
+
+		<constructor-arg index="1">
+			<value>1</value>
+		</constructor-arg>
+		<!--<constructor-arg>-->
+			<!--<map>-->
+				<!--<entry key="a" value="10"></entry>-->
+				<!--<entry key="b" value="20"></entry>-->
+			<!--</map>-->
+		<!--</constructor-arg>-->
+
+		<property name="testStr" value="aaaaaaa"></property>
+
+		<qualifier type="org.springframework.beans.factory.annotation.Qualifier" value="qfBean"/>
 	</bean>
+
+	<import resource="lookUpTest.xml"/>
 
 	<beans profile="dev"></beans>
 

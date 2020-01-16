@@ -12,8 +12,9 @@ public class XmlTest {
 
 	public static void main(String[] args){
 		BeanFactory beanFactory = new XmlBeanFactory(new ClassPathResource("beanFactoryTest.xml"));
-		MyTestBean bean = beanFactory.getBean(MyTestBean.class);
+//		MyTestBean bean = beanFactory.getBean(MyTestBean.class);
 
+		MyTestBean bean = (MyTestBean)beanFactory.getBean("myTestBean");
 		System.out.println(bean.getTestStr());
 	}
 }

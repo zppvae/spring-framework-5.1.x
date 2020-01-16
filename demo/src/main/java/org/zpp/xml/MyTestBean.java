@@ -9,8 +9,10 @@ public class MyTestBean {
 	private String testStr = "testStr";
 
 
-	public MyTestBean(){
+	public MyTestBean(){}
 
+	public MyTestBean(int a,int b){
+		System.out.println("a + b = " + (a + b));
 	}
 
 	public MyTestBean(String testStr){
