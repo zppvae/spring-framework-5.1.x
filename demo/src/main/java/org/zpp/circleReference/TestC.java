@@ -8,6 +8,10 @@ public class TestC {
 
 	private TestA testA;
 
+	public TestC(TestA testA){
+
+	}
+
 	public TestA getTestA() {
 		return testA;
 	}

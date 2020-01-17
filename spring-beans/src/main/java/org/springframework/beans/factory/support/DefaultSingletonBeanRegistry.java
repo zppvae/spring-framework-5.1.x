@@ -79,6 +79,8 @@ public class DefaultSingletonBeanRegistry extends SimpleAliasRegistry implements
 	/** Cache of singleton factories: bean name to ObjectFactory. */
 	/**
 	 * beanName -> 创建bean工厂对象（ObjectFactory），解决循环依赖
+	 *
+	 * 一旦最终对象被创建(通过objectFactory.getObject())，此引用信息将删除
 	 */
 	private final Map<String, ObjectFactory<?>> singletonFactories = new HashMap<>(16);
 
@@ -90,6 +92,8 @@ public class DefaultSingletonBeanRegistry extends SimpleAliasRegistry implements
 	 * 那么当 bean 还在创建过程中，就可以通过 getBean() 方法获取到了
 	 *
 	 * 判断属性的类型匹配时，从这个map中获取 bean
+	 *
+	 * 一旦对象最终创建好，此引用信息将删除
 	 */
 	private final Map<String, Object> earlySingletonObjects = new HashMap<>(16);
 
@@ -264,6 +268,7 @@ public class DefaultSingletonBeanRegistry extends SimpleAliasRegistry implements
 					this.suppressedExceptions = new LinkedHashSet<>();
 				}
 				try {
+					//实例化 bean
 					singletonObject = singletonFactory.getObject();
 					newSingleton = true;
 				}

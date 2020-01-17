@@ -189,14 +189,15 @@ bean 标识符在创建过程中将一直保持在这个池中，因此如果在
 发现自己已经在 “当前创建bean池”里时，将抛出 BeanCurrentlyInCreationException
 异常表示循环依赖。而对于创建完毕的bean将从 “当前创建bean池”中清除掉。
 
+此依赖无法解决，只能抛出异常表示循环依赖。
+
 ### setter 循环依赖
 对于 setter 注入造成的依赖是通过 spring 容器提前暴露刚完成构造器注入但未完成其他步骤
 （如setter注入）的 bean来完成的，而且只能解决单例作用域的bean循环依赖。
 
-通过提前暴露一个单例工厂方法，从而使其他 bean 能引用到该 bean：
+通过提前`暴露一个单例工厂方法`，从而使其他 bean 能引用到该 bean：
 ```java
 addSingletonFactory(beanName, () -> getEarlyBeanReference(beanName, mbd, bean));
-
 ```
 
 ### prototype 范围的依赖处理

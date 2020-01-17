@@ -95,6 +95,7 @@ public abstract class FactoryBeanRegistrySupport extends DefaultSingletonBeanReg
 	 */
 	protected Object getObjectFromFactoryBean(FactoryBean<?> factory, String beanName, boolean shouldPostProcess) {
 		if (factory.isSingleton() && containsSingleton(beanName)) {
+			//保证全局唯一
 			synchronized (getSingletonMutex()) {
 				Object object = this.factoryBeanObjectCache.get(beanName);
 				if (object == null) {

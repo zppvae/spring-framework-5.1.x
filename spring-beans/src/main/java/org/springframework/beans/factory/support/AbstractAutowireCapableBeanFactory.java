@@ -428,7 +428,7 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 	}
 
 	/**
-	 *
+	 * 实例化后的后处理器应用
 	 *
 	 * @param existingBean the existing bean instance
 	 * @param beanName the name of the bean, to be passed to it if necessary
@@ -526,6 +526,8 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 		try {
 			// Give BeanPostProcessors a chance to return a proxy instead of the target bean instance.
 			/**
+			 * 给 BeanPostProcessors 一个机会来返回代理，替代真正的实例（实例化的前置处理）
+			 *
 			 * 第一次执行spring的后置处理器
 			 *
 			 * 实现接口 InstantiationAwareBeanPostProcessor ，此时bean就不为空
@@ -586,6 +588,10 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 		if (instanceWrapper == null) {
 			/**
 			 * 第二个处理器
+			 *
+			 * 根据指定bean使用对应的策略创建新的实例，如：工厂方法、构造函数自动注入、简单初始化
+			 *
+			 * 实例化bean，将 BeanDefinition 转换为 BeanWrapper
 			 */
 			instanceWrapper = createBeanInstance(beanName, mbd, args);
 		}
@@ -618,7 +624,7 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 		// Eagerly cache singletons to be able to resolve circular references
 		// even when triggered by lifecycle interfaces like BeanFactoryAware.
 		/**
-		 * 是否需要提早曝光：单例&允许循环依赖&当前bean正在创建中，检测循环依赖
+		 * 是否需要提早曝光：单例&允许循环依赖&当前bean正在创建中（检测循环依赖）
 		 */
 		boolean earlySingletonExposure = (mbd.isSingleton() && this.allowCircularReferences &&
 				isSingletonCurrentlyInCreation(beanName));
@@ -691,7 +697,7 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 					/**
 					 * 因为bean创建后其所依赖的bean一定是已经创建的。
 					 *
-					 * actualDependentBeans不为空则表示当前bean创建后其依赖的bean
+					 * actualDependentBeans不为空，则表示当前bean创建后其依赖的bean
 					 * 却没有全部创建完，也就是说存在循环依赖
 					 */
 					if (!actualDependentBeans.isEmpty()) {
@@ -1013,6 +1019,8 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 	}
 
 	/**
+	 * 获取提前暴露的 bean 引用，主要解决循环引用问题，只有单例才会调用
+	 *
 	 * Obtain a reference for early access to the specified bean,
 	 * typically for the purpose of resolving a circular reference.
 	 * @param beanName the name of the bean (for error handling purposes)
@@ -1192,6 +1200,8 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 	}
 
 	/**
+	 * 实例化前的后处理器应用
+	 *
 	 * Apply InstantiationAwareBeanPostProcessors to the specified bean definition
 	 * (by class and name), invoking their {@code postProcessBeforeInstantiation} methods.
 	 * <p>Any returned object will be used as the bean instead of actually instantiating
@@ -1217,6 +1227,13 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 	}
 
 	/**
+	 * 1、如果存在工厂方法，则使用工厂方法进行初始化
+	 * 2、一个类有多个构造函数，每个构造函数都有不同的参数，
+	 *    所以需要根据参数锁定构造函数并进行初始化
+	 * 3、如果既不存在工厂方法也不存在带有参数构造函数，则使用
+	 *    默认的构造函数进行 bean 的实例化
+	 *
+	 *
 	 * Create a new instance for the specified bean, using an appropriate instantiation strategy:
 	 * factory method, constructor autowiring, or simple instantiation.
 	 * @param beanName the name of the bean
