@@ -33,17 +33,18 @@
 
 spring 内部的处理器通过 addBeanPostProcessor，自定义的通过扫描注解获取
  
-## 6个最重要的类
+## 7个最重要的BeanPostProcessor
 
 保存在 beanDefinitionMap中
 
 ```java
+ApplicationContextAwareProcessor
 ConfigurationClassPostProcessor
-DefaultEventListenerFactory
-EventListenerMethodProcessor
+ApplicationListenerDetector
+PostProcessorRegistrationDelegate#BeanPostProcessorChecker
 AutowiredAnnotationBeanPostProcessor
 CommonAnnotationBeanPostProcessor
-RequiredAnnotationBeanPostProcessor(spring5.1.x废除)
+RequiredAnnotationBeanPostProcessor(spring5.1废除)
 ```
 ## BeanDefinitionHolder
 
@@ -87,6 +88,8 @@ private AutowireCandidateResolver autowireCandidateResolver;
 ## 循环引用
 
 ## ImportAware
+
+ImportAware 中的方法可以得到 spring 中任意一个注解。
 
 https://blog.csdn.net/zgyjk/article/details/80780165
 ```java

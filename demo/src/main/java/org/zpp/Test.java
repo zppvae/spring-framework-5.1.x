@@ -1,16 +1,8 @@
 package org.zpp;
 
-import org.springframework.cglib.core.SpringNamingPolicy;
-import org.springframework.cglib.proxy.Enhancer;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.zpp.aop.AopConfig;
 import org.zpp.aop.service.OrderServiceImpl;
-import org.zpp.beanFactoryProcessor.MyBeanFactoryProcessor;
-import org.zpp.config.AppConfig;
-import org.zpp.dao.IndexDao;
-import org.zpp.dao.IndexDao2;
-import org.zpp.dao.IndexDaoImpl;
-import org.zpp.enhance.TestMethodCallback;
 
 /**
  * BeanDefinition：bean的定义

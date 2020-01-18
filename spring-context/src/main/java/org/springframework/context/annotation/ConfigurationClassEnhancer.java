@@ -133,14 +133,17 @@ class ConfigurationClassEnhancer {
 		 */
 		enhancer.setSuperclass(configSuperClass);
 		/**
-		 * 增强接口
+		 * 增强接口，便于判断，获得 beanFactory，从而getBean()获取bean
 		 */
 		enhancer.setInterfaces(new Class<?>[] {EnhancedConfiguration.class});
 		enhancer.setUseFactory(false);
 		enhancer.setNamingPolicy(SpringNamingPolicy.INSTANCE);
 		/**
-		 * BeanFactoryAwareGeneratorStrategy 是一个生成策略，为
-		 * 生成的cglib类中添加成员变量 $$beanFactory
+		 * BeanFactoryAwareGeneratorStrategy 是一个生成策略，
+		 * 为生成的cglib类中(AppConfigProxy)添加成员变量 $$beanFactory（{@value BEAN_FACTORY_FIELD），
+		 * 同时基于接口 EnhancedConfiguration 的父接口 BeanFactoryAware 中的 setBeanFactory方法，
+		 * 设置此变量的值为当前 context 中的 beanFactory，这样一来我们这个 cglib代理的对象就有了
+		 * beanFactroy，从而不用去通过方法获取对象，直接通过 getBean()获取。
 		 */
 		enhancer.setStrategy(new BeanFactoryAwareGeneratorStrategy(classLoader));
 		enhancer.setCallbackFilter(CALLBACK_FILTER);
@@ -317,6 +320,8 @@ class ConfigurationClassEnhancer {
 
 
 	/**
+	 * bean 方法拦截器
+	 *
 	 * Intercepts the invocation of any {@link Bean}-annotated methods in order to ensure proper
 	 * handling of bean semantics such as scoping and AOP proxying.
 	 * @see Bean
@@ -336,6 +341,8 @@ class ConfigurationClassEnhancer {
 					MethodProxy cglibMethodProxy) throws Throwable {
 
 			/**
+			 * enhancedConfigInstance：代理对象
+			 *
 			 * 通过 enhancedConfigInstance 中 cglib 生成的成员变量 $$beanFactory获得beanFactory
 			 */
 			ConfigurableBeanFactory beanFactory = getBeanFactory(enhancedConfigInstance);
@@ -356,8 +363,12 @@ class ConfigurationClassEnhancer {
 			// proxy that intercepts calls to getObject() and returns any cached bean instance.
 			// This ensures that the semantics of calling a FactoryBean from within @Bean methods
 			// is the same as that of referring to a FactoryBean within XML. See SPR-6602.
+			/**
+			 * 判断是否是一个factoryBean对象
+			 */
 			if (factoryContainsBean(beanFactory, BeanFactory.FACTORY_BEAN_PREFIX + beanName) &&
 					factoryContainsBean(beanFactory, beanName)) {
+				//getBean("&beanName")
 				Object factoryBean = beanFactory.getBean(BeanFactory.FACTORY_BEAN_PREFIX + beanName);
 				if (factoryBean instanceof ScopedProxyFactoryBean) {
 					// Scoped proxy factory beans are a special case and should not be further proxied
@@ -371,7 +382,7 @@ class ConfigurationClassEnhancer {
 			/**
 			 * 判断执行的方法和调用的方法是不是一个方法
 			 *
-			 *
+			 * 判断是 new 还是 getBean
 			 */
 			if (isCurrentlyInvokedFactoryMethod(beanMethod)) {
 				// The factory is calling the bean method in order to instantiate and register the bean
@@ -387,12 +398,22 @@ class ConfigurationClassEnhancer {
 									"these container lifecycle issues; see @Bean javadoc for complete details.",
 							beanMethod.getDeclaringClass().getSimpleName(), beanMethod.getName()));
 				}
+				//new
 				return cglibMethodProxy.invokeSuper(enhancedConfigInstance, beanMethodArgs);
 			}
-
+			//$$beanFactory.getBean
 			return resolveBeanReference(beanMethod, beanMethodArgs, beanFactory, beanName);
 		}
 
+		/**
+		 * 判断是否是第一次调用，如果是则 new，不是则从 beanFactory中获取（$$beanFactory.getBean("beanName")）
+		 *
+		 * @param beanMethod
+		 * @param beanMethodArgs
+		 * @param beanFactory
+		 * @param beanName
+		 * @return
+		 */
 		private Object resolveBeanReference(Method beanMethod, Object[] beanMethodArgs,
 				ConfigurableBeanFactory beanFactory, String beanName) {
 
@@ -503,12 +524,15 @@ class ConfigurationClassEnhancer {
 		 * to happen on Groovy classes).
 		 */
 		private boolean isCurrentlyInvokedFactoryMethod(Method method) {
+			//代理方法
 			Method currentlyInvoked = SimpleInstantiationStrategy.getCurrentlyInvokedFactoryMethod();
 			return (currentlyInvoked != null && method.getName().equals(currentlyInvoked.getName()) &&
 					Arrays.equals(method.getParameterTypes(), currentlyInvoked.getParameterTypes()));
 		}
 
 		/**
+		 * 为 factoryBean#getObject() 创建代理
+		 *
 		 * Create a subclass proxy that intercepts calls to getObject(), delegating to the current BeanFactory
 		 * instead of creating a new instance. These proxies are created only when calling a FactoryBean from
 		 * within a Bean method, allowing for proper scoping semantics even when working against the FactoryBean

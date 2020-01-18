@@ -602,7 +602,7 @@ class ConfigurationClassParser {
 							String[] importClassNames = selector.selectImports(currentSourceClass.getMetadata());
 							//拿到 selectImports() 返回的字符串，将其转换成对应的类
 							Collection<SourceClass> importSourceClasses = asSourceClasses(importClassNames);
-							//递归调用 @Import类中（转换后的类）包含的@Import注解
+							//递归调用， @Import类中（转换后的类）包含的@Import注解
 							processImports(configClass, currentSourceClass, importSourceClasses, false);
 						}
 					}

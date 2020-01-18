@@ -955,6 +955,8 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 	}
 
 	/**
+	 * 实例化 bean
+	 *
 	 * Finish the initialization of this context's bean factory,
 	 * initializing all remaining singleton beans.
 	 */
@@ -990,6 +992,7 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 
 		// Instantiate all remaining (non-lazy-init) singletons.
 		/**
+		 *
 		 * 初始化剩下的单实例的bean
 		 *
 		 * {@link org.springframework.beans.factory.support.DefaultListableBeanFactory

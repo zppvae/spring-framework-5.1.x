@@ -244,9 +244,7 @@ public abstract class AbstractBeanFactory extends FactoryBeanRegistrySupport imp
 		 *
 		 * 1、name 可能会以 & 开头，name="&aa" ,去除后 name="aa"，表明获取 FactoryBean本身
 		 * 2、别名。取 alias 表示的最终 beanName，
-		 *
-		 *
-		 *
+		 * 
 		 */
 		final String beanName = transformedBeanName(name);
 		Object bean;
