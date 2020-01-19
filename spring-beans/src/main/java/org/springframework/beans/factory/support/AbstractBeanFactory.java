@@ -251,6 +251,7 @@ public abstract class AbstractBeanFactory extends FactoryBeanRegistrySupport imp
 
 		// Eagerly check singleton cache for manually registered singletons.
 		/**
+		 * 如果在 getBean()的时候的 bean 是懒加载的，则此时需要判断缓存中有没有
 		 *
 		 * 检查缓存中或者实例工厂中是否有对应的实例
 		 * 为什么会首先使用这段代码？
@@ -1267,6 +1268,16 @@ public abstract class AbstractBeanFactory extends FactoryBeanRegistrySupport imp
 
 	/**
 	 * 如果指定 beanName 是子 bean的话，同时会合并父类的相关属性
+	 *
+	 * @ImportResource("classpath:springxxx.xml")
+	 *
+	 * <bean id="order" class="OrderService">
+	 *     <property name="name" value="parent"/>
+	 * </bean>
+	 *
+	 * <bean id="orderChild" parent="order">
+	 *     <property name="name" value="children"/>
+	 * </bean>
 	 *
 	 * Return a merged RootBeanDefinition, traversing the parent bean definition
 	 * if the specified bean corresponds to a child bean definition.

@@ -5,6 +5,8 @@ import org.springframework.context.annotation.AnnotationConfigApplicationContext
 import org.zpp.aop.dao.OrderDao;
 import org.zpp.aop.dao.OrderDaoBImpl;
 import org.zpp.aop.service.OrderServiceImpl;
+import org.zpp.aop.service.UserService;
+import org.zpp.aop.service.UserServiceImpl;
 
 /**
  * {@link AopNamespaceHandler}
@@ -21,9 +23,12 @@ public class AopMain {
 
 //		applicationContext.getBean(OrderDao.class).print("targer----");
 
-		OrderDao orderDaoB = (OrderDao)applicationContext.getBean(OrderDaoBImpl.class);
-		MyInvocationHandler invocationHandler = new MyInvocationHandler(orderDaoB);
-		OrderDao proxy = (OrderDao)invocationHandler.getProxy();
-		proxy.print("-----");
+		applicationContext.getBean(OrderServiceImpl.class).query("B");
+
+		UserService userService = new UserServiceImpl();
+
+		MyInvocationHandler invocationHandler = new MyInvocationHandler(userService);
+		UserService proxy = (UserService)invocationHandler.getProxy();
+		proxy.add();
 	}
 }

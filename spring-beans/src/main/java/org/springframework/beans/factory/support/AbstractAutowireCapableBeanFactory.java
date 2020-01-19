@@ -531,6 +531,7 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 			 *
 			 * 第一次执行spring的后置处理器
 			 *
+			 * TODO
 			 * 实现接口 InstantiationAwareBeanPostProcessor ，此时bean就不为空
 			 */
 			Object bean = resolveBeforeInstantiation(beanName, mbdToUse);
@@ -1271,12 +1272,13 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 		 *
 		 */
 		if (mbd.getFactoryMethodName() != null) {
+			//通过 factoryMethod 构建 bean 实例
 			return instantiateUsingFactoryMethod(beanName, mbd, args);
 		}
 
 		// Shortcut when re-creating the same bean...
 		/**
-		 * 多次构建同一个 bean时，可以使用 Shortcut（快捷方式）
+		 * 多次实例化同一个 bean时，可以使用 Shortcut
 		 */
 		boolean resolved = false;
 		boolean autowireNecessary = false;
@@ -1318,10 +1320,17 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 		 *
 		 * 如果在某个构造方法上加上@Autowired，则会返回当前构造方法，由AutowiredAnnotationBeanPostProcessor后置处理器处理
 		 * {@link org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor}
+		 *
+		 * 如果只有一个无参构造方法，则 ctors返回空
+		 *
+		 * 自动装配模型 != 自动装配技术
+		 *
+		 * spring 自动装配模型默认为NO 等于 byType技术
 		 */
 		Constructor<?>[] ctors = determineConstructorsFromBeanPostProcessors(beanClass, beanName);
 		if (ctors != null || mbd.getResolvedAutowireMode() == AUTOWIRE_CONSTRUCTOR ||
 				mbd.hasConstructorArgumentValues() || !ObjectUtils.isEmpty(args)) {
+			//调用有参构造函数
 			return autowireConstructor(beanName, mbd, ctors, args);
 		}
 

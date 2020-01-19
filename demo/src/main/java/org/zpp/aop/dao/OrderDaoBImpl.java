@@ -2,7 +2,7 @@ package org.zpp.aop.dao;
 
 import org.springframework.stereotype.Component;
 
-@Component("orderDaoB")
+@Component
 public class OrderDaoBImpl implements OrderDao {
 
 	@Override

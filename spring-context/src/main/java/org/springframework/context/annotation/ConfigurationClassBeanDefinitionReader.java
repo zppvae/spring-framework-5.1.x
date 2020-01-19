@@ -230,7 +230,7 @@ class ConfigurationClassBeanDefinitionReader {
 		if (metadata.isStatic()) {
 			// static @Bean method
 			beanDef.setBeanClassName(configClass.getMetadata().getClassName());
-			//为 bean 配置factoryMethod
+			//为 bean 配置factoryMethod，每调用一次就创建一个 bean
 			beanDef.setFactoryMethodName(methodName);
 		}
 		else {
