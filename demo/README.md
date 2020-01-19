@@ -207,7 +207,17 @@ addSingletonFactory(beanName, () -> getEarlyBeanReference(beanName, mbd, bean));
 对于 prototype 作用域 bean，spring 容器无法完成依赖注入，因为spring容器不进行缓存
  prototype 作用域的 bean，因此无法提前暴露一个创建中的 bean。
 
+## jdk与cglib
 
+- 如果目标对象实现了接口，默认情况下会采用jdk的动态代理实现AOP
+- 如果目标对象实现了接口，可以强制使用cglib实现AOP
+- 如果目标对象没有实现接口，必须采用cglib库，spring会自动在jdk动态代理和cglib之间转换
+
+### jdk动态代理和cglib字节码生成的区别
+
+- jdk动态代理只能对实现了接口的类生成代理，而不能针对类
+- cglib 是针对类实现代理，主要是对指定的类生成一个子类，覆盖其中的方法，因为是继承，所以该类
+或方法最好不要声明成 final。
 
 
 

@@ -62,6 +62,8 @@ public class ProxyConfig implements Serializable {
 	}
 
 	/**
+	 * 为 true 时，目标类本身被代理而不是目标类的接口
+	 *
 	 * Return whether to proxy the target class directly as well as any interfaces.
 	 */
 	public boolean isProxyTargetClass() {

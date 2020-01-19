@@ -65,10 +65,8 @@ public class SimpleInstantiationStrategy implements InstantiationStrategy {
 		 * 因为可以在创建代理的同时将动态方法织入类中；
 		 * 但是如果没有需要动态改变得方法，为了方便直接反射就可以了
 		 *
-		 * 1、检查 bean 配置中是否配置了 @lookup 或 @Replace，
-		 * 没有配置则直接使用反射的方式
-		 * 2、如果使用了这2个特性，在直接使用反射的方法创建实例就不妥了，
-		 * 因为需要将这两个配置提供的功能切入进去
+		 * 1、检查 bean 配置中是否配置了 @lookup 或 @Replace，没有配置则直接使用反射的方式
+		 * 2、如果使用了这2个特性，在直接使用反射的方法创建实例就不妥了，因为需要将这两个配置提供的功能切入进去
 		 *
 		 */
 		if (!bd.hasMethodOverrides()) {
@@ -96,10 +94,12 @@ public class SimpleInstantiationStrategy implements InstantiationStrategy {
 					}
 				}
 			}
+			//反射
 			return BeanUtils.instantiateClass(constructorToUse);
 		}
 		else {
 			// Must generate CGLIB subclass.
+			//cglib 动态代理
 			return instantiateWithMethodInjection(bd, beanName, owner);
 		}
 	}

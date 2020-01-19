@@ -371,6 +371,12 @@ public class DefaultSingletonBeanRegistry extends SimpleAliasRegistry implements
 	}
 
 	/**
+	 * 当前 bean 是否在创建中
+	 *
+	 * 不同的scope记录位置不一样
+	 *
+	 * 单例：{@link DefaultSingletonBeanRegistry#getSingleton}
+	 *
 	 * Return whether the specified singleton bean is currently in creation
 	 * (within the entire factory).
 	 * @param beanName the name of the bean

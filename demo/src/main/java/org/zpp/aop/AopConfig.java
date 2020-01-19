@@ -12,6 +12,6 @@ import org.springframework.context.annotation.EnableAspectJAutoProxy;
  */
 @ComponentScan("org.zpp.aop")
 @Configuration
-@EnableAspectJAutoProxy
+@EnableAspectJAutoProxy(proxyTargetClass = true)
 public class AopConfig {
 }

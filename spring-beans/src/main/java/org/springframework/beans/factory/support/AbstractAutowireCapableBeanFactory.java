@@ -60,6 +60,7 @@ import org.springframework.beans.factory.FactoryBean;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.InjectionPoint;
 import org.springframework.beans.factory.UnsatisfiedDependencyException;
+import org.springframework.beans.factory.annotation.RequiredAnnotationBeanPostProcessor;
 import org.springframework.beans.factory.config.AutowireCapableBeanFactory;
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.beans.factory.config.BeanPostProcessor;
@@ -1265,8 +1266,8 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 		/**
 		 * 如果工厂方法不为空，则通过工厂方法构建 bean 对象
 		 *
-		 * <bean factory-method=""></bean>或者 RootBeanDefinition中存在
-		 *  factoryMethodName属性
+		 * <bean factory-method=""></bean>或者 RootBeanDefinition 中存在factoryMethodName属性不为空，
+		 * spring会根据 RootBeanDefinition 中的配置生成 bean 的实例
 		 *
 		 */
 		if (mbd.getFactoryMethodName() != null) {
@@ -1519,8 +1520,8 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 		// state of the bean before properties are set. This can be used, for example,
 		// to support styles of field injection.
 		/**
-		 * 给 InstantiationAwareBeanPostProcessor 最后一次机会，
-		 * 在属性设置前来改变 bean。
+		 * 给 InstantiationAwareBeanPostProcessor 最后一次机会，在属性设置前来改变 bean。
+		 *
 		 * 如：可以用来支持属性注入的类型
 		 */
 		boolean continueWithPropertyPopulation = true;
@@ -1532,7 +1533,7 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 					/**
 					 * 第五次
 					 *
-					 * 是否继续填充 bean
+					 * 是否继续 bean 的属性填充
 					 */
 					if (!ibp.postProcessAfterInstantiation(bw.getWrappedInstance(), beanName)) {
 						continueWithPropertyPopulation = false;
@@ -1551,6 +1552,9 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 
 		PropertyValues pvs = (mbd.hasPropertyValues() ? mbd.getPropertyValues() : null);
 
+		/**
+		 * 根据注入类型，提取依赖的 bean，并统一存入 PropertyValues 中
+		 */
 		if (mbd.getResolvedAutowireMode() == AUTOWIRE_BY_NAME || mbd.getResolvedAutowireMode() == AUTOWIRE_BY_TYPE) {
 			MutablePropertyValues newPvs = new MutablePropertyValues(pvs);
 			// Add property values based on autowire by name if applicable.
@@ -1585,6 +1589,8 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 						 * 第六次执行后置处理器
 						 *
 						 * 对所有需要依赖检查的属性进行后处理
+						 *
+						 * {@link RequiredAnnotationBeanPostProcessor#postProcessPropertyValues}
 						 */
 						pvsToUse = ibp.postProcessPropertyValues(pvs, filteredPds, bw.getWrappedInstance(), beanName);
 						if (pvsToUse == null) {
@@ -1608,10 +1614,9 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 		if (pvs != null) {
 			/**
 			 * 到这里已经完成了对所有注入属性的获取，但是获取的
-			 * 属性是以 PropertyValues形式存在的，还并没有应用到已经
-			 * 实例化的 bean中
+			 * 属性是以 PropertyValues形式存在的，还并没有应用到已经实例化的 bean中
 			 *
-			 * 将属性应用到 bean 中
+			 * 将 PropertyValues 属性应用到 bean 中
 			 */
 			applyPropertyValues(beanName, mbd, bw, pvs);
 		}
@@ -1686,6 +1691,8 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 					boolean eager = !PriorityOrdered.class.isInstance(bw.getWrappedInstance());
 					DependencyDescriptor desc = new AutowireByTypeDependencyDescriptor(methodParam, eager);
 					/**
+					 * 类型匹配
+					 *
 					 * 解析指定 beanName的属性所匹配的值，并把解析到的属性名称存储在
 					 * autowiredBeanNames中，当属性存在多个封装 bean时，如：
 					 * @Autowired

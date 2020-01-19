@@ -120,8 +120,10 @@ class ConstructorResolver {
 		BeanWrapperImpl bw = new BeanWrapperImpl();
 		this.beanFactory.initBeanWrapper(bw);
 
+		//使用的构造函数
 		Constructor<?> constructorToUse = null;
 		ArgumentsHolder argsHolderToUse = null;
+		//使用的构造参数
 		Object[] argsToUse = null;
 
 		/**
@@ -197,7 +199,7 @@ class ConstructorResolver {
 			ConstructorArgumentValues resolvedValues = null;
 
 			/**
-			 * 最小参数个数
+			 * 最小构造函数参数个数
 			 *
 			 */
 			int minNrOfArgs;
@@ -226,6 +228,9 @@ class ConstructorResolver {
 				minNrOfArgs = resolveConstructorArguments(beanName, mbd, bw, cargs, resolvedValues);
 			}
 
+			/**
+			 * 构造函数的确定
+			 */
 			/**
 			 * 排序给定的构造函数，public 构造函数优先参数数量降序、非public 构造函数优先参数数量降序
 			 *
