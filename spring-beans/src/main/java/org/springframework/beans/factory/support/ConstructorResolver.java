@@ -123,19 +123,22 @@ class ConstructorResolver {
 		//使用的构造函数
 		Constructor<?> constructorToUse = null;
 		ArgumentsHolder argsHolderToUse = null;
-		//使用的构造参数
+		//使用的构造参数值
 		Object[] argsToUse = null;
 
 		/**
 		 * explicitArgs 通过 getBean 方法传入
 		 * 如果 getBean 方法调用的时候指定方法参数，那么直接使用
 		 */
+		//mbd.getConstructorArgumentValues().addGenericArgumentValue("com.zpp.dao");
 		if (explicitArgs != null) {
 			argsToUse = explicitArgs;
 		}
 		else {
 			/**
 			 * 如果在 getBean() 时没有指定则尝试从配置文件中解析
+			 *
+			 * 参数解析器
 			 */
 			Object[] argsToResolve = null;
 			synchronized (mbd.constructorArgumentLock) {
@@ -194,8 +197,12 @@ class ConstructorResolver {
 			}
 
 			// Need to resolve the constructor.
+			/**
+			 * 判断构造方法是否为空，判断是否根据构造方法自动注入
+			 */
 			boolean autowiring = (chosenCtors != null ||
 					mbd.getResolvedAutowireMode() == AutowireCapableBeanFactory.AUTOWIRE_CONSTRUCTOR);
+			//构造参数的值
 			ConstructorArgumentValues resolvedValues = null;
 
 			/**

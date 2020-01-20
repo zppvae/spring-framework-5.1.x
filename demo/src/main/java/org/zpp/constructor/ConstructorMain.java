@@ -12,7 +12,7 @@ public class ConstructorMain {
 		AnnotationConfigApplicationContext applicationContext =
 				new AnnotationConfigApplicationContext(ConstructorConfig.class);
 
-		applicationContext.getBean(IndexService.class);
+		applicationContext.getBean(IndexService.class).query();
 
 	}
 }

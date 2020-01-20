@@ -6,16 +6,15 @@ import org.springframework.stereotype.Component;
 @Component
 public class IndexService {
 
-	public IndexService(){
+	Class clazz;
 
+	public IndexService(Class clazz){
+		this.clazz = clazz;
 	}
 
-	@Autowired
-	public IndexService(int a){
 
-	}
-
-	public IndexService(int a,int b){
-
+	public void query(){
+		System.out.println("query");
+		System.out.println(clazz);
 	}
 }
