@@ -17,8 +17,43 @@
 
 `RootBeanDefinition`，描述spring内部的类
 
-## GenericBeanDefinition
- 用于承载 bean 的属性
+`GenericBeanDefinition`，用于承载 bean 的属性
+
+## BeanDefinitionHolder
+
+```java
+/**
+ * BeanDefinitionHolder，一个数据结构，map结构
+ * 保存 beanName、BeanDefinition
+ */
+BeanDefinitionHolder definitionHolder = new BeanDefinitionHolder(abd, beanName);
+```
+
+## bean的实例化过程
+
+- doCreateBean()创建 BeanWrapper，通过BeanWrapper.getWrappedInstance()获取bean，
+然后for循环所有的beanPostProcessor
+
+## bean 的生命周期流程
+1、得到用户自定义的BeanDefinitionRegistryPostProcessor
+2、得到spring内置的 BeanDefinitionRegistryPostProcessor
+3、处理 BeanDefinitionRegistryPostProcessor（遍历）
+
+## bean 的自动装配模型和自动装配技术
+https://blog.csdn.net/qq_27409289/article/details/100753656
+
+> 自动装配技术(手动装配)：
+
+`@Resource:` 默认是通过name来查找注入值，如果不存在就报错
+
+`@Autowired：` 通过类型查找(类型)，然后再通过name
+
+> AutowireMode(自动装配模型):在spring中有四种模式分别是: 
+
+- autowire_no： 默认装配模式， 目前非xml配置都是使用这种方式，然后程序员使用注解手动注入
+- autowire_name: 通过set方法，并且 set方法的名称需要和bean的name一致     byName
+- autowire_type: 通过set方法,并且再根据bean的类型，注入属性，是通过类型配置  byType
+- autowire_construcor: 通过构造器注入
 
 ## spring 的扩展点：
 ```java
@@ -28,14 +63,18 @@
 4、{@link org.springframework.context.annotation.ImportSelector}
 5、{@link org.springframework.context.annotation.ImportBeanDefinitionRegistrar}
 ```
+
 ### BeanPostProcessor
+
 实现此接口，可以插手 `bean` 的实例化过程。
 
-spring 内部的处理器通过 addBeanPostProcessor，自定义的通过扫描注解获取
- 
-## 7个最重要的BeanPostProcessor
+---
+
+> 7个最重要的BeanPostProcessor
 
 保存在 beanDefinitionMap中
+
+`spring` 后置处理器，贯穿整个 `spring bean` 的实例化前后
 
 ```java
 ApplicationContextAwareProcessor
@@ -46,15 +85,15 @@ AutowiredAnnotationBeanPostProcessor
 CommonAnnotationBeanPostProcessor
 RequiredAnnotationBeanPostProcessor(spring5.1废除)
 ```
-## BeanDefinitionHolder
 
-```java
-/**
- * BeanDefinitionHolder，一个数据结构，map结构
- * 保存 beanName、BeanDefinition
- */
-BeanDefinitionHolder definitionHolder = new BeanDefinitionHolder(abd, beanName);
-```
+`CommonAnnotationBeanPostProcessor`，处理 `bean` 的生命周期回调
+
+### BeanFactoryPostProcessor
+
+> 典型应用：PropertyPlaceholderConfigurer
+
+spring 内部的处理器通过 addBeanPostProcessor，自定义的通过扫描注解获取
+
 
 ## DefaultListableBeanFactory
 
@@ -76,16 +115,6 @@ private AutowireCandidateResolver autowireCandidateResolver;
 - 普通类
 - ImportSelector实现类
 - ImportBeanDefinitionRegistrar实现类（可以往bdMap中添加一个bd）
-
-## CommonAnnotationBeanPostProcessor
-处理 `bean` 的生命周期回调
-
-## bean的实例化过程
-
-- doCreateBean()创建 BeanWrapper，通过BeanWrapper.getWrappedInstance()获取bean，
-然后for循环所有的beanPostProcessor
-
-## 循环引用
 
 ## ImportAware
 
@@ -118,32 +147,12 @@ public class RedissonHttpSessionConfiguration extends SpringHttpSessionConfigura
     }
 }
 ```
-## bean的后置处理器
-
-- ApplicationContextAwareProcessor
-- PostProcessorRegistrationDelegate
-- ApplicationListenerDetector
-- ConfigurationClassPostProcessor
-- RequiredAnnotationBeanPostProcessor（处理@Required）
-
-`spring` 后置处理器，贯穿整个 `spring bean` 的实例化前后
-
-## bean 的生命周期流程
-1、得到用户自定义的BeanDefinitionRegistryPostProcessor
-2、得到spring内置的 BeanDefinitionRegistryPostProcessor
-3、处理 BeanDefinitionRegistryPostProcessor（遍历）
-
-## BeanFactoryPostProcessor
-
-> 典型应用：PropertyPlaceholderConfigurer
 
 ## AOP
 
 - @EnableAspectJAutoProxy中的@Import(AspectJAutoProxyRegistrar.class)添加一个AnnotationAutoProxyCreator的后置处理器，
 生成bean的代理，proxy可以对bean进行增强
 
-## bean 的自动装配模型和自动装配技术
-https://blog.csdn.net/qq_27409289/article/details/100753656
 
 ## DefaultSingletonBeanRegistry
 ```java
@@ -199,6 +208,7 @@ bean 标识符在创建过程中将一直保持在这个池中，因此如果在
 （如setter注入）的 bean来完成的，而且只能解决单例作用域的bean循环依赖。
 
 通过提前`暴露一个单例工厂方法`，从而使其他 bean 能引用到该 bean：
+
 ```java
 addSingletonFactory(beanName, () -> getEarlyBeanReference(beanName, mbd, bean));
 ```
