@@ -1,22 +1,15 @@
 package org.zpp.circleReference;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
 /**
  * @author zpp
  * @date 2020/1/13 16:05
  */
+@Component
 public class TestB {
 
-	private TestC testC;
-
-	public TestB(TestC testC){
-
-	}
-
-	public TestC getTestC() {
-		return testC;
-	}
-
-	public void setTestC(TestC testC) {
-		this.testC = testC;
-	}
+	@Autowired
+	private TestA testA;
 }

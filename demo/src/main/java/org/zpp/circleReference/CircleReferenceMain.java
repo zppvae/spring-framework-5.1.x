@@ -1,7 +1,6 @@
 package org.zpp.circleReference;
 
-import org.springframework.beans.factory.BeanCurrentlyInCreationException;
-import org.springframework.context.support.ClassPathXmlApplicationContext;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
 /**
  * 循环引用
@@ -12,10 +11,9 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 public class CircleReferenceMain {
 
 	public static void main(String[] args){
-	    try {
-	    	new ClassPathXmlApplicationContext("circleReferenceTest.xml");
-		}catch (Exception e) {
-	    	e.printStackTrace();
-		}
+		AnnotationConfigApplicationContext applicationContext =
+				new AnnotationConfigApplicationContext(CircleReferenceConfig.class);
+
+		System.out.println(applicationContext.getBean("testA"));
 	}
 }

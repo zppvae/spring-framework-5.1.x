@@ -13,5 +13,6 @@ public class TestBeanFactory implements BeanFactoryPostProcessor {
 	public void postProcessBeanFactory(ConfigurableListableBeanFactory beanFactory) throws BeansException {
 		GenericBeanDefinition bd = (GenericBeanDefinition)beanFactory.getBeanDefinition("indexService");
 		bd.getConstructorArgumentValues().addGenericArgumentValue("org.zpp.constructor.DeptService");
+		bd.getConstructorArgumentValues().addGenericArgumentValue(1,"java.lang.Integer");
 	}
 }

@@ -7,13 +7,13 @@
         http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.0.xsd http://www.springframework.org/schema/tool http://www.springframework.org/schema/tool/spring-tool.xsd">
 
 
-	<bean id="testA" class="org.zpp.circleReference.TestA">
-		<constructor-arg index="0" ref="testB"/>
-	</bean>
-	<bean id="testB" class="org.zpp.circleReference.TestB">
-		<constructor-arg index="0" ref="testC"/>
-	</bean>
-	<bean id="testC" class="org.zpp.circleReference.TestC">
-		<constructor-arg index="0" ref="testA"/>
-	</bean>
+	<!--<bean id="testA" class="org.zpp.circleReference.TestA">-->
+		<!--<constructor-arg index="0" ref="testB"/>-->
+	<!--</bean>-->
+	<!--<bean id="testB" class="org.zpp.circleReference.TestB">-->
+		<!--<constructor-arg index="0" ref="testC"/>-->
+	<!--</bean>-->
+	<!--<bean id="testC" class="org.zpp.circleReference.TestC">-->
+		<!--<constructor-arg index="0" ref="testA"/>-->
+	<!--</bean>-->
 </beans>
